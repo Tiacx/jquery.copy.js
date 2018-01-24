@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Dome</title>
+	<link rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.css">
+	<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="jquery.copy.js"></script>
+	<style type="text/css">
+	.container{margin-top: 2%;}
+	.container .row{margin-bottom: 15px;}
+	.btn{margin-bottom: 5px;}
+	.form-control{margin-bottom: 5px;}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<h4>Example 1:</h4>
+			<button type="button" class="btn btn-primary btn-copy1" data-clipboard-text="This is Example 1.">Copy1</button>
+			<pre>&lt;button type=&quot;button&quot; class=&quot;btn btn-primary btn-copy1&quot; data-clipboard-text=&quot;This is Example 1.&quot;&gt;Example 1&lt;/button&gt;</pre>
+		</div>
+		<div class="row">
+			<h4>Example 2:</h4>
+			<button type="button" class="btn btn-primary btn-copy2">Copy2</button>
+			<textarea class="form-control" rows="3">This is Example 2.</textarea>
+			<pre>&lt;button type=&quot;button&quot; class=&quot;btn btn-primary btn-copy2&quot;&gt;Copy2&lt;/button&gt;
+&lt;textarea class=&quot;form-control&quot; rows=&quot;3&quot;&gt;This is Example 2.&lt;/textarea&gt;</pre>
+		</div>
+		<div class="row">
+			<h4>JS:</h4>
+			<pre>
+$('.btn-copy1').copy();
+
+$('.btn-copy2').copy({
+	copy: function(_this){
+		return _this.next('textarea').val();
+	},
+	afterCopy: function(res, _this){
+		if(res==true){
+			alert('Copied text to clipboard.');
+		}else{
+			alert('Copy failed.');
+		}
+	}
+});
+			</pre>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+	$('.btn-copy1').copy();
+
+	$('.btn-copy2').copy({
+		copy: function(_this){
+			return _this.next('textarea').val();
+		},
+		afterCopy: function(res, _this){
+			if(res==true){
+				alert('Copied text to clipboard.');
+			}else{
+				alert('Copy failed.');
+			}
+		}
+	});
+	</script>
+</body>
+</html>
