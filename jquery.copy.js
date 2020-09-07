@@ -1,7 +1,7 @@
 /*!
  * jQuery Copy Plugin
- * version: 1.0.0-2018.01.23
- * Requires jQuery v1.5 or later
+ * version: 2.0.0-2020.09.07
+ * Requires jQuery v1.5 or later && Bootstrap
  * Copyright (c) 2018 Tiac
  * http://www.cnblogs.com/tujia/p/8336671.html
  */
@@ -43,12 +43,29 @@
             copy: function(_this){
                 return _this.parents('div').find('.inp-link').val();
             },
-            afterCopy: function(res){
+            afterCopy: function(res, _this){
                 if(res==true){
                     alert('Copied text to clipboard。');
                 }else{
                     alert('Copy failed！');
                 }
+            }
+        });
+
+
+    Tooltip Options:
+    -----------
+
+    Html:
+        <button type="button" class="demo1" data-clipboard-text="Copy Me!">Copy</button>
+        <span class="demo2">something</span>
+    JS:
+        $('.demo1').copy({tooltip:false});
+        $('.demo2').copy({
+            tooltip: {
+                title: 'click to copy',
+                afterCopyText: 'copied!!',
+                .....
             }
         });
 */
@@ -75,11 +92,18 @@ function copyTextToClipboard(_this, text) {
 
 $.fn.copy = function(options) {
     if(options===undefined) options = {};
+
     var defaults = {};
     defaults.copy = function(_this){
         clipboard_text = _this.data('clipboard-text');
         return clipboard_text;
     };
+
+    if (navigator.language && navigator.language.toLowerCase() == 'zh-cn') {
+        defaults.tooltip = {title: '点击复制', afterCopyText: '复制成功!!'};
+    } else {
+        defaults.tooltip = {title: 'copy', afterCopyText: 'copied!!'};
+    }
 
     defaults.afterCopy = function(res, _this){
         if(res){
@@ -87,9 +111,17 @@ $.fn.copy = function(options) {
         }else{
             console.log('Copy failed！');
         }
+
+        if (options.tooltip != false) {
+            _this.next('.tooltip').find('.tooltip-inner').html(options.tooltip.afterCopyText);
+        }
     };
 
     options = $.extend(defaults, options);
+
+    if (options.tooltip != false) {
+        this.tooltip(options.tooltip);
+    }
 
     this.on('click', function(){
         clipboard_text = options.copy($(this));
